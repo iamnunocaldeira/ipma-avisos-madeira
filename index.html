@@ -9,6 +9,7 @@
 html,body{background:transparent;font-family:Arial,sans-serif;font-size:13px;color:#222}
 body{padding:8px}
 
+/* ── HEADER ── */
 .header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .logo{background:#004a8f;color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;padding:5px 8px;border-radius:5px;flex-shrink:0}
 .header-title{font-size:13px;font-weight:700;color:#1a2533}
@@ -18,6 +19,7 @@ body{padding:8px}
 .refresh-btn{font-size:10px;color:#555;background:#f4f6f8;border:1px solid #ccc;border-radius:4px;padding:2px 7px;cursor:pointer;margin-top:3px;display:inline-block}
 .refresh-btn:hover{background:#e8edf2}
 
+/* ── REGION CHART ── */
 .region-block{margin-bottom:14px}
 .region-label{font-size:11px;font-weight:700;color:#004a8f;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
 .region-code-tag{font-size:9px;font-weight:700;background:#004a8f;color:#fff;border-radius:3px;padding:1px 5px;letter-spacing:.5px}
@@ -30,7 +32,6 @@ body{padding:8px}
 .row-icon svg{width:18px;height:18px}
 .row-timeline{flex:1;position:relative;overflow:hidden}
 
-/* colour segments */
 .seg{position:absolute;top:0;bottom:0}
 .seg-green {background:#4caf50}
 .seg-yellow{background:#fdd835}
@@ -38,29 +39,62 @@ body{padding:8px}
 .seg-red   {background:#e53935}
 .seg+.seg{border-left:1px solid rgba(0,0,0,.06)}
 
-/* separators */
 .sep-3h {position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.18);z-index:2;pointer-events:none}
 .sep-day{position:absolute;top:0;bottom:0;width:2px;background:#111;z-index:3;pointer-events:none}
 .now-line{position:absolute;top:0;bottom:0;width:2px;background:rgba(0,80,200,.55);z-index:4;pointer-events:none}
 
-/* axis */
 .axis-row{display:flex;border-top:1px solid #bbb;background:#f8f9fa;height:18px}
 .axis-spacer{width:32px;min-width:32px;border-right:1px solid #ccc;flex-shrink:0}
 .axis-dates{flex:1;position:relative}
 .axis-date-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:9px;font-weight:700;color:#222;white-space:nowrap}
 .axis-hour-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:8px;color:#888;white-space:nowrap}
 
+/* ── LEGEND ── */
 .legend{display:flex;flex-wrap:wrap;gap:5px 12px;margin-top:8px}
 .legend-item{display:flex;align-items:center;gap:4px;font-size:10px;color:#555}
 .legend-sq{width:11px;height:11px;border-radius:2px;flex-shrink:0}
 
-.footer{margin-top:6px;font-size:9px;color:#aaa;text-align:center}
-.footer a{color:#004a8f;text-decoration:none}
+/* ── CRITERIA TABLES ── */
+.criteria-section{margin-top:16px;border-top:2px solid #004a8f;padding-top:10px}
+.criteria-title{font-size:11px;font-weight:700;color:#004a8f;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
 
+.crit-table{width:100%;border-collapse:collapse;font-size:10px;margin-bottom:10px}
+.crit-table th,.crit-table td{border:1px solid #ccc;padding:3px 6px;vertical-align:middle}
+.crit-table thead th{background:#d9e4f0;font-weight:700;color:#1a2533;text-align:center}
+.crit-table tbody tr:nth-child(even){background:#f7f9fb}
+.crit-table tbody td:first-child{font-weight:700;color:#1a2533}
+.crit-table td.param{color:#444}
+.crit-table td.notes{font-size:9px;color:#666;font-style:italic}
+
+/* level header cells */
+.th-yellow{background:#fdd835!important;color:#333!important;font-weight:700;text-align:center}
+.th-orange{background:#ff8c00!important;color:#fff!important;font-weight:700;text-align:center}
+.th-red   {background:#e53935!important;color:#fff!important;font-weight:700;text-align:center}
+
+/* value cells */
+.td-yellow{background:#fffde7;text-align:center}
+.td-orange{background:#fff3e0;text-align:center}
+.td-red   {background:#ffebee;text-align:center}
+.td-unit  {text-align:center;color:#555}
+.td-center{text-align:center}
+
+/* temp table */
+.temp-table{width:100%;border-collapse:collapse;font-size:10px}
+.temp-table th,.temp-table td{border:1px solid #ccc;padding:3px 6px;text-align:center;vertical-align:middle}
+.temp-table thead th{background:#d9e4f0;font-weight:700;color:#1a2533}
+.temp-table .th-group{background:#e8eef5;font-weight:700}
+.temp-table tbody tr:nth-child(even){background:#f7f9fb}
+.temp-table td.region-name{text-align:left;font-weight:700;color:#1a2533}
+
+/* ── STATUS ── */
 .status{background:#f4f6f8;border:1px solid #dde2e8;border-radius:6px;padding:20px;text-align:center;color:#666;font-size:12px}
 .status.error{background:#fff0f0;border-color:#f5a0a0;color:#900}
 .spinner{width:18px;height:18px;border:2px solid #dde2e8;border-top-color:#004a8f;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── FOOTER ── */
+.footer{margin-top:8px;font-size:9px;color:#aaa;text-align:center}
+.footer a{color:#004a8f;text-decoration:none}
 </style>
 </head>
 <body>
@@ -68,8 +102,8 @@ body{padding:8px}
 <div class="header">
   <div class="logo">IPMA</div>
   <div>
-    <div class="header-title">Avisos Meteorológicos — Funchal</div>
-    <div class="header-sub">Regiões Montanhosas e Costa Sul · nas próximas 72h</div>
+    <div class="header-title">Avisos Meteorológicos — Madeira</div>
+    <div class="header-sub">Regiões Montanhosas &amp; Costa Sul · próximas 72h</div>
   </div>
   <div class="header-right">
     <div class="update-lbl" id="update-time">—</div>
@@ -88,164 +122,269 @@ body{padding:8px}
   <div class="legend-item"><div class="legend-sq" style="background:#e53935"></div>Vermelho</div>
 </div>
 
-<div class="footer">
+<!-- ── CRITERIA SECTION ── -->
+<div class="criteria-section">
+  <div class="criteria-title">Critérios para o Arquipélago da Madeira</div>
+
+  <table class="crit-table">
+    <thead>
+      <tr>
+        <th>Aviso</th>
+        <th>Parâmetro</th>
+        <th class="th-yellow">Amarelo</th>
+        <th class="th-orange">Laranja</th>
+        <th class="th-red">Vermelho</th>
+        <th>Unidade</th>
+        <th>Notas</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2">Vento</td>
+        <td class="param" rowspan="2">Rajada Máxima do Vento</td>
+        <td class="td-yellow">70 a 90</td>
+        <td class="td-orange">91 a 130</td>
+        <td class="td-red">&gt; 130</td>
+        <td class="td-unit">km/h</td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td class="td-yellow">90 a 110</td>
+        <td class="td-orange">111 a 130</td>
+        <td class="td-red">&gt; 130</td>
+        <td class="td-unit">km/h</td>
+        <td class="notes">Nas terras altas</td>
+      </tr>
+      <tr>
+        <td rowspan="2">Precipitação</td>
+        <td class="param" rowspan="2">Chuva / Aguaceiros</td>
+        <td class="td-yellow">10 a 20</td>
+        <td class="td-orange">21 a 40</td>
+        <td class="td-red">&gt; 40</td>
+        <td class="td-unit">mm/1h</td>
+        <td class="notes">Milímetros numa hora</td>
+      </tr>
+      <tr>
+        <td class="td-yellow">30 a 40</td>
+        <td class="td-orange">41 a 60</td>
+        <td class="td-red">&gt; 60</td>
+        <td class="td-unit">mm/6h</td>
+        <td class="notes">Milímetros em 6 horas</td>
+      </tr>
+      <tr>
+        <td rowspan="3">Neve</td>
+        <td class="param" rowspan="3">Queda de Neve com acumulação</td>
+        <td class="td-yellow">6 a 15</td>
+        <td class="td-orange">6 a 15</td>
+        <td class="td-red">&gt; 15</td>
+        <td class="td-unit">cm</td>
+        <td class="notes">Cota abaixo de 1000 m</td>
+      </tr>
+      <tr>
+        <td class="td-yellow">1 a 10</td>
+        <td class="td-orange">11 a 30</td>
+        <td class="td-red">&gt; 30</td>
+        <td class="td-unit">cm</td>
+        <td class="notes">Cota de 1000 a 1600 m</td>
+      </tr>
+      <tr>
+        <td class="td-yellow">5 a 25</td>
+        <td class="td-orange">26 a 50</td>
+        <td class="td-red">&gt; 50</td>
+        <td class="td-unit">cm</td>
+        <td class="notes">Cota acima de 1600 m</td>
+      </tr>
+      <tr>
+        <td>Trovoada</td>
+        <td class="param">Descargas Eléctricas</td>
+        <td class="td-yellow td-center">a)</td>
+        <td class="td-orange td-center">b)</td>
+        <td class="td-red td-center">c)</td>
+        <td class="td-unit">—</td>
+        <td class="notes">a) Frequentes e Dispersas. b) Frequentes e Concentradas. c) Muito Frequentes e excessivamente concentradas.</td>
+      </tr>
+      <tr>
+        <td>Nevoeiro</td>
+        <td class="param">Visibilidade</td>
+        <td class="td-yellow">*≥ 48h</td>
+        <td class="td-orange">*≥ 72h</td>
+        <td class="td-red">*≥ 96h</td>
+        <td class="td-unit">—</td>
+        <td class="notes">* - duração</td>
+      </tr>
+      <tr>
+        <td>Tempo Quente</td>
+        <td class="param">Temperatura Máxima</td>
+        <td class="td-yellow"># a #*</td>
+        <td class="td-orange"># a #*</td>
+        <td class="td-red">&gt; #*</td>
+        <td class="td-unit">°C</td>
+        <td class="notes">* - duração ≥ 48 horas</td>
+      </tr>
+      <tr>
+        <td>Tempo Frio</td>
+        <td class="param">Temperatura Mínima</td>
+        <td class="td-yellow"># a #*</td>
+        <td class="td-orange"># a #*</td>
+        <td class="td-red">&lt; #*</td>
+        <td class="td-unit">°C</td>
+        <td class="notes">* - duração ≥ 48 horas</td>
+      </tr>
+      <tr>
+        <td>Agitação Marítima</td>
+        <td class="param">Altura Significativa das Ondas</td>
+        <td class="td-yellow">4 a 5</td>
+        <td class="td-orange">5 a 7</td>
+        <td class="td-red">&gt; 7</td>
+        <td class="td-unit">m</td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="font-size:9px;color:#555;margin-bottom:8px;font-style:italic">
+    # - Valores para cada região apresentados na tabela seguinte.
+  </div>
+
+  <table class="temp-table">
+    <thead>
+      <tr>
+        <th rowspan="2" style="text-align:left">Região</th>
+        <th colspan="3" class="th-group">Temperatura Mínima</th>
+        <th colspan="3" class="th-group">Temperatura Máxima</th>
+      </tr>
+      <tr>
+        <th class="th-yellow">Amarelo</th>
+        <th class="th-orange">Laranja</th>
+        <th class="th-red">Vermelho</th>
+        <th class="th-yellow">Amarelo</th>
+        <th class="th-orange">Laranja</th>
+        <th class="th-red">Vermelho</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="region-name">Costa Norte</td>
+        <td class="td-yellow">7 a 8</td><td class="td-orange">5 a 6</td><td class="td-red">&lt; 5</td>
+        <td class="td-yellow">24 a 26</td><td class="td-orange">27 a 30</td><td class="td-red">&gt; 30</td>
+      </tr>
+      <tr>
+        <td class="region-name">Regiões Montanhosas</td>
+        <td class="td-yellow">-2 a -1</td><td class="td-orange">-4 a -2</td><td class="td-red">&lt; -4</td>
+        <td class="td-yellow">25 a 27</td><td class="td-orange">28 a 29</td><td class="td-red">&gt; 29</td>
+      </tr>
+      <tr>
+        <td class="region-name">Costa Sul</td>
+        <td class="td-yellow">8 a 9</td><td class="td-orange">8 a 9</td><td class="td-red">&lt; 8</td>
+        <td class="td-yellow">27 a 29</td><td class="td-orange">30 a 35</td><td class="td-red">&gt; 35</td>
+      </tr>
+      <tr>
+        <td class="region-name">Porto Santo</td>
+        <td class="td-yellow">10 a 11</td><td class="td-orange">8 a 9</td><td class="td-red">&lt; 8</td>
+        <td class="td-yellow">26 a 27</td><td class="td-orange">28 a 31</td><td class="td-red">&gt; 31</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer" style="margin-top:10px">
   Fonte: <a href="https://api.ipma.pt" target="_blank" rel="noopener">IPMA Open Data</a>
   &nbsp;·&nbsp; Atualização automática a cada 10 min
 </div>
 
 <script>
-/* ── IPMA-style SVG icons (inline, monochrome — coloured by awareness level context) ── */
 const ICONS = {
-  'Trovoada': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M19 10a7 7 0 1 0-13.5 2.4A4 4 0 0 0 7 20h9a5 5 0 0 0 1-9.9"/>
-    <polyline points="13 11 10 16 14 16 11 21"/>
-  </svg>`,
-  'Precipitação': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M20 17.6A5 5 0 0 0 18 8h-1.3A7 7 0 1 0 4 14.9"/>
-    <line x1="8" y1="19" x2="8" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="16" y1="19" x2="16" y2="21"/>
-  </svg>`,
-  'Vento': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M9.6 8A3 3 0 1 1 12 12H2"/>
-    <path d="M14.8 16A3 3 0 1 0 17 12H2"/>
-    <line x1="2" y1="10" x2="10" y2="10"/>
-  </svg>`,
-  'Agitação Marítima': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>
-    <path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>
-    <path d="M2 7c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>
-  </svg>`,
-  'Neve': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="12" y1="2" x2="12" y2="22"/>
-    <path d="M17 7l-5 5-5-5"/><path d="M17 17l-5-5-5 5"/>
-    <path d="M2 12l5-3 5 3 5-3 5 3"/>
-    <path d="M2 12l5 3 5-3 5 3 5-3"/>
-  </svg>`,
-  'Tempo Frio': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26A6 6 0 1 0 14 14.76z"/>
-  </svg>`,
-  'Tempo Quente': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="4"/>
-    <line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/>
-    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-    <line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/>
-    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-  </svg>`,
-  'Nevoeiro': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="3" y1="10" x2="21" y2="10"/>
-    <line x1="3" y1="14" x2="21" y2="14"/>
-    <line x1="3" y1="18" x2="15" y2="18"/>
-    <path d="M7 6a5 5 0 0 1 10 0"/>
-  </svg>`
+  'Trovoada':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 10a7 7 0 1 0-13.5 2.4A4 4 0 0 0 7 20h9a5 5 0 0 0 1-9.9"/><polyline points="13 11 10 16 14 16 11 21"/></svg>`,
+  'Precipitação':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 17.6A5 5 0 0 0 18 8h-1.3A7 7 0 1 0 4 14.9"/><line x1="8" y1="19" x2="8" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="16" y1="19" x2="16" y2="21"/></svg>`,
+  'Vento':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.6 8A3 3 0 1 1 12 12H2"/><path d="M14.8 16A3 3 0 1 0 17 12H2"/><line x1="2" y1="10" x2="10" y2="10"/></svg>`,
+  'Agitação Marítima':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M2 7c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>`,
+  'Neve':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 7l-5 5-5-5"/><path d="M17 17l-5-5-5 5"/><path d="M2 12l5-3 5 3 5-3 5 3"/><path d="M2 12l5 3 5-3 5 3 5-3"/></svg>`,
+  'Tempo Frio':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26A6 6 0 1 0 14 14.76z"/></svg>`,
+  'Tempo Quente':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
+  'Nevoeiro':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="10" x2="21" y2="10"/><line x1="3" y1="14" x2="21" y2="14"/><line x1="3" y1="18" x2="15" y2="18"/><path d="M7 6a5 5 0 0 1 10 0"/></svg>`
 };
 
-const PHENOMENA = [
-  'Trovoada','Precipitação','Vento','Agitação Marítima','Neve','Tempo Frio','Tempo Quente','Nevoeiro'
-];
+const PHENOMENA=['Trovoada','Precipitação','Vento','Agitação Marítima','Neve','Tempo Frio','Tempo Quente','Nevoeiro'];
+const TYPE_MAP={'Rain':'Precipitação','Wind':'Vento','Fog':'Nevoeiro','Snow/Ice':'Neve','Thunderstorm':'Trovoada','Coastal Event':'Agitação Marítima','High Temperature':'Tempo Quente','Low Temperature':'Tempo Frio'};
+const REGIONS={MRM:'Regiões Montanhosas da Madeira',MCS:'Costa Sul da Madeira'};
+const LVL={red:4,orange:3,yellow:2,green:1};
+const CLS={red:'seg-red',orange:'seg-orange',yellow:'seg-yellow',green:'seg-green'};
+const DOTC={green:'#4caf50',yellow:'#fdd835',orange:'#ff8c00',red:'#e53935'};
 
-const TYPE_MAP = {
-  'Rain':'Precipitação','Wind':'Vento','Fog':'Nevoeiro','Snow/Ice':'Neve',
-  'Thunderstorm':'Trovoada','Coastal Event':'Agitação Marítima',
-  'High Temperature':'Tempo Quente','Low Temperature':'Tempo Frio'
-};
+function normType(t){return TYPE_MAP[t]||t}
+function normLevel(l){return(l||'green').toLowerCase()}
 
-const REGIONS = { MRM:'Regiões Montanhosas', MCS:'Costa Sul' };
-const LVL  = {red:4,orange:3,yellow:2,green:1};
-const CLS  = {red:'seg-red',orange:'seg-orange',yellow:'seg-yellow',green:'seg-green'};
-const DOTC = {green:'#4caf50',yellow:'#fdd835',orange:'#ff8c00',red:'#e53935'};
+function buildChart(code,name,warnings){
+  const now=new Date();
+  const STEP_H=3,WINDOW_H=72,SLOTS=WINDOW_H/STEP_H;
+  const t0=new Date(now);
+  t0.setHours(Math.floor(t0.getHours()/STEP_H)*STEP_H,0,0,0);
+  const tEnd=new Date(t0.getTime()+WINDOW_H*3600000);
 
-function normType(t)  { return TYPE_MAP[t]||t }
-function normLevel(l) { return (l||'green').toLowerCase() }
+  const grids={};
+  PHENOMENA.forEach(p=>{grids[p]=new Array(SLOTS).fill('green')});
 
-function buildChart(code, name, warnings) {
-  const now = new Date();
-
-  /* Window: align t0 to previous 3h boundary, show 72h */
-  const STEP_H  = 3;          // 3-hour slots
-  const WINDOW_H = 72;
-  const SLOTS = WINDOW_H / STEP_H; // 24 slots
-  const t0 = new Date(now);
-  t0.setHours(Math.floor(t0.getHours()/STEP_H)*STEP_H, 0, 0, 0);
-  const tEnd = new Date(t0.getTime() + WINDOW_H*3600000);
-
-  /* Build level grids per phenomenon */
-  const grids = {};
-  PHENOMENA.forEach(p => { grids[p] = new Array(SLOTS).fill('green') });
-
-  warnings.forEach(w => {
-    const type  = normType(w.awarenessTypeName);
-    const level = normLevel(w.awarenessLevelID);
-    if (!grids[type] || level==='green') return;
-    const wS = w.startTime ? new Date(w.startTime) : null;
-    const wE = w.endTime   ? new Date(w.endTime)   : null;
-    if (!wS||!wE) return;
-    for (let s=0; s<SLOTS; s++) {
-      const st = new Date(t0.getTime() + s*STEP_H*3600000);
-      const en = new Date(st.getTime() + STEP_H*3600000);
-      if (st<wE && en>wS && (LVL[level]||0)>(LVL[grids[type][s]]||0))
-        grids[type][s] = level;
+  warnings.forEach(w=>{
+    const type=normType(w.awarenessTypeName);
+    const level=normLevel(w.awarenessLevelID);
+    if(!grids[type]||level==='green')return;
+    const wS=w.startTime?new Date(w.startTime):null;
+    const wE=w.endTime?new Date(w.endTime):null;
+    if(!wS||!wE)return;
+    for(let s=0;s<SLOTS;s++){
+      const st=new Date(t0.getTime()+s*STEP_H*3600000);
+      const en=new Date(st.getTime()+STEP_H*3600000);
+      if(st<wE&&en>wS&&(LVL[level]||0)>(LVL[grids[type][s]]||0))
+        grids[type][s]=level;
     }
   });
 
-  /* Merge adjacent same-level slots into segments */
-  function toSegs(slots) {
-    const out=[]; let i=0;
+  function toSegs(slots){
+    const out=[];let i=0;
     while(i<slots.length){
       let j=i;
       while(j<slots.length&&slots[j]===slots[i])j++;
-      out.push({lv:slots[i], pct:i/slots.length*100, w:(j-i)/slots.length*100});
+      out.push({lv:slots[i],pct:i/slots.length*100,w:(j-i)/slots.length*100});
       i=j;
     }
     return out;
   }
 
-  /* 3h tick separators (every slot boundary) */
-  const ticks3h = [];
-  for (let s=1; s<SLOTS; s++) {
-    const t = new Date(t0.getTime()+s*STEP_H*3600000);
-    const pct = s/SLOTS*100;
-    const isDay = t.getHours()===0;
-    ticks3h.push({ pct, isDay, label: t });
+  const ticks=[];
+  for(let s=1;s<SLOTS;s++){
+    const t=new Date(t0.getTime()+s*STEP_H*3600000);
+    ticks.push({pct:s/SLOTS*100,isDay:t.getHours()===0,label:t});
   }
 
-  /* "Now" line */
-  const nowPct = Math.max(0, Math.min(100, (now-t0)/(tEnd-t0)*100));
-
-  /* Max level */
-  const maxLv = warnings.reduce((best,w) => {
+  const nowPct=Math.max(0,Math.min(100,(now-t0)/(tEnd-t0)*100));
+  const maxLv=warnings.reduce((best,w)=>{
     const l=normLevel(w.awarenessLevelID);
-    return (LVL[l]||0)>(LVL[best]||0)?l:best;
-  }, 'green');
+    return(LVL[l]||0)>(LVL[best]||0)?l:best;
+  },'green');
 
-  /* Build rows */
-  const rowsHtml = PHENOMENA.map(p => {
-    const segs = toSegs(grids[p]);
-    const segsHtml = segs.map(s=>
-      `<div class="seg ${CLS[s.lv]}" style="left:${s.pct.toFixed(2)}%;width:${s.w.toFixed(2)}%"></div>`
-    ).join('');
-    const sepsHtml = ticks3h.map(t=>
-      `<div class="${t.isDay?'sep-day':'sep-3h'}" style="left:${t.pct.toFixed(2)}%"></div>`
-    ).join('');
-    const nowHtml = `<div class="now-line" style="left:${nowPct.toFixed(2)}%"></div>`;
-    const icon = ICONS[p]||'';
-    return `<div class="chart-row">
-      <div class="row-icon" title="${p}">${icon}</div>
+  const rowsHtml=PHENOMENA.map(p=>{
+    const segs=toSegs(grids[p]);
+    const segsHtml=segs.map(s=>`<div class="seg ${CLS[s.lv]}" style="left:${s.pct.toFixed(2)}%;width:${s.w.toFixed(2)}%"></div>`).join('');
+    const sepsHtml=ticks.map(t=>`<div class="${t.isDay?'sep-day':'sep-3h'}" style="left:${t.pct.toFixed(2)}%"></div>`).join('');
+    const nowHtml=`<div class="now-line" style="left:${nowPct.toFixed(2)}%"></div>`;
+    return`<div class="chart-row">
+      <div class="row-icon" title="${p}">${ICONS[p]||''}</div>
       <div class="row-timeline">${segsHtml}${sepsHtml}${nowHtml}</div>
     </div>`;
   }).join('');
 
-  /* Axis: date labels at midnight, hour labels at 6h/12h/18h */
-  const axisHtml = ticks3h.map(t => {
-    const h = t.label.getHours();
-    if (h===0) {
-      const lbl = t.label.toLocaleDateString('pt-PT',{day:'2-digit',month:'short'});
-      return `<div class="axis-date-label" style="left:${t.pct.toFixed(2)}%">${lbl}</div>`;
-    } else if (h===6||h===12||h===18) {
-      return `<div class="axis-hour-label" style="left:${t.pct.toFixed(2)}%">${String(h).padStart(2,'0')}h</div>`;
+  const axisHtml=ticks.map(t=>{
+    const h=t.label.getHours();
+    if(h===0){
+      const lbl=t.label.toLocaleDateString('pt-PT',{day:'2-digit',month:'short'});
+      return`<div class="axis-date-label" style="left:${t.pct.toFixed(2)}%">${lbl}</div>`;
+    }else if(h===6||h===12||h===18){
+      return`<div class="axis-hour-label" style="left:${t.pct.toFixed(2)}%">${String(h).padStart(2,'0')}h</div>`;
     }
-    return '';
+    return'';
   }).join('');
 
-  return `<div class="region-block">
+  return`<div class="region-block">
     <div class="region-label">
       <span class="region-code-tag">${code}</span>
       ${name}
@@ -261,33 +400,28 @@ function buildChart(code, name, warnings) {
   </div>`;
 }
 
-async function loadWarnings() {
-  const content = document.getElementById('content');
-  const timeEl  = document.getElementById('update-time');
-  try {
-    const res  = await fetch('https://api.ipma.pt/open-data/forecast/warnings/warnings_www.json');
-    if (!res.ok) throw new Error('HTTP '+res.status);
-    const data = await res.json();
-    const rd   = {MRM:[],MCS:[]};
-    data.forEach(w=>{ if(rd.hasOwnProperty(w.idAreaAviso)) rd[w.idAreaAviso].push(w) });
-    content.innerHTML = Object.entries(REGIONS)
-      .map(([code,name])=>buildChart(code,name,rd[code])).join('');
+async function loadWarnings(){
+  const content=document.getElementById('content');
+  const timeEl=document.getElementById('update-time');
+  try{
+    const res=await fetch('https://api.ipma.pt/open-data/forecast/warnings/warnings_www.json');
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    const rd={MRM:[],MCS:[]};
+    data.forEach(w=>{if(rd.hasOwnProperty(w.idAreaAviso))rd[w.idAreaAviso].push(w)});
+    content.innerHTML=Object.entries(REGIONS).map(([code,name])=>buildChart(code,name,rd[code])).join('');
     const now=new Date();
     timeEl.textContent='Atualizado: '+now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'});
     if(window.parent!==window)
       window.parent.postMessage({type:'resize',height:document.body.scrollHeight},'*');
-  } catch(err) {
-    content.innerHTML=`<div class="status error">
-      <b>Erro ao carregar avisos do IPMA</b><br>
-      <small>${err.message}</small><br><br>
-      <button class="refresh-btn" onclick="loadWarnings()">↻ Tentar novamente</button>
-    </div>`;
+  }catch(err){
+    content.innerHTML=`<div class="status error"><b>Erro ao carregar avisos do IPMA</b><br><small>${err.message}</small><br><br><button class="refresh-btn" onclick="loadWarnings()">↻ Tentar novamente</button></div>`;
     timeEl.textContent='Erro';
   }
 }
 
 loadWarnings();
-setInterval(loadWarnings, 10*60*1000);
+setInterval(loadWarnings,10*60*1000);
 </script>
 </body>
 </html>
