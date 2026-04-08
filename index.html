@@ -30,26 +30,25 @@ body{padding:8px}
 .chart-row:last-of-type{border-bottom:none}
 .row-icon{width:32px;min-width:32px;display:flex;align-items:center;justify-content:center;background:#f0f2f5;border-right:1px solid #ccc;flex-shrink:0;padding:2px}
 .row-icon svg{width:18px;height:18px}
-.row-timeline{flex:1;position:relative;overflow:hidden}
+.row-timeline{flex:1;position:relative;overflow:hidden;background:#e8e8e8}
 
-.seg{position:absolute;top:0;bottom:0}
+.seg{position:absolute;top:1px;bottom:1px}
 .seg-green {background:#4caf50}
 .seg-yellow{background:#fdd835}
 .seg-orange{background:#ff8c00}
 .seg-red   {background:#e53935}
-.seg+.seg{border-left:1px solid rgba(0,0,0,.06)}
 
-.sep-1h {position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.18);z-index:1;pointer-events:none}
-.sep-3h {position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.45);z-index:2;pointer-events:none}
-.sep-day{position:absolute;top:0;bottom:0;width:2px;background:#111;z-index:3;pointer-events:none}
-.now-line{position:absolute;top:0;bottom:0;width:2px;background:rgba(0,80,200,.55);z-index:4;pointer-events:none}
+.sep-1h {position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.18);z-index:2;pointer-events:none}
+.sep-3h {position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.45);z-index:3;pointer-events:none}
+.sep-day{position:absolute;top:0;bottom:0;width:2px;background:#111;z-index:4;pointer-events:none}
+.now-line{position:absolute;top:0;bottom:0;width:2px;background:rgba(0,80,200,.55);z-index:5;pointer-events:none}
 
 .axis-row{display:flex;border-top:1px solid #bbb;background:#f8f9fa;height:18px}
 .axis-spacer{width:32px;min-width:32px;border-right:1px solid #ccc;flex-shrink:0}
 .axis-dates{flex:1;position:relative}
 .axis-date-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:9px;font-weight:700;color:#222;white-space:nowrap}
 .axis-3h-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:8px;color:#888;white-space:nowrap}
-.axis-1h-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:7px;color:#ccc;white-space:nowrap}
+.axis-1h-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:7px;color:#bbb;white-space:nowrap}
 
 /* ── LEGEND ── */
 .legend{display:flex;flex-wrap:wrap;gap:5px 12px;margin-top:8px}
@@ -102,6 +101,7 @@ body{padding:8px}
 <body>
 
 <div class="header">
+  <div class="logo">IPMA</div>
   <div>
     <div class="header-title">Avisos Meteorológicos do IPMA para o Funchal</div>
     <div class="header-sub">Regiões Montanhosas e Costa Sul nas próximas 72h</div>
@@ -317,9 +317,9 @@ function normLevel(l){return(l||'green').toLowerCase()}
 
 function buildChart(code,name,warnings){
   const now=new Date();
-  const STEP_H=3,WINDOW_H=72,SLOTS=WINDOW_H/STEP_H;
+  const STEP_H=1,WINDOW_H=72,SLOTS=WINDOW_H/STEP_H;
   const t0=new Date(now);
-  t0.setHours(Math.floor(t0.getHours()/STEP_H)*STEP_H,0,0,0);
+  t0.setHours(Math.floor(t0.getHours()/3)*3,0,0,0);
   const tEnd=new Date(t0.getTime()+WINDOW_H*3600000);
 
   const grids={};
@@ -351,22 +351,14 @@ function buildChart(code,name,warnings){
     return out;
   }
 
-  // ticks a cada 3h (slots existentes)
+  // ticks a cada hora
   const ticks=[];
   for(let s=1;s<SLOTS;s++){
     const t=new Date(t0.getTime()+s*STEP_H*3600000);
-    ticks.push({pct:s/SLOTS*100,isDay:t.getHours()===0,is3h:true,label:t});
+    const h=t.getHours();
+    const pct=s/SLOTS*100;
+    ticks.push({pct,isDay:h===0,is3h:h%3===0,label:t});
   }
-  // ticks intermédios de 1h
-  for(let s=0;s<SLOTS;s++){
-    for(let h=1;h<STEP_H;h++){
-      const ms=t0.getTime()+(s*STEP_H+h)*3600000;
-      if(ms>=tEnd.getTime())continue;
-      const pct=(ms-t0.getTime())/(tEnd-t0)*100;
-      ticks.push({pct,isDay:false,is3h:false,label:new Date(ms)});
-    }
-  }
-  ticks.sort((a,b)=>a.pct-b.pct);
 
   const nowPct=Math.max(0,Math.min(100,(now-t0)/(tEnd-t0)*100));
   const maxLv=warnings.reduce((best,w)=>{
@@ -376,13 +368,13 @@ function buildChart(code,name,warnings){
 
   const rowsHtml=PHENOMENA.map(p=>{
     const segs=toSegs(grids[p]);
-    const segsHtml=segs.map(s=>`<div class="seg ${CLS[s.lv]}" style="left:${s.pct.toFixed(2)}%;width:${s.w.toFixed(2)}%"></div>`).join('');
+    const segsHtml=segs.map(s=>`<div class="seg ${CLS[s.lv]}" style="left:${s.pct.toFixed(3)}%;width:${s.w.toFixed(3)}%"></div>`).join('');
     const sepsHtml=ticks.map(t=>{
-      if(t.isDay) return`<div class="sep-day" style="left:${t.pct.toFixed(2)}%"></div>`;
-      if(t.is3h)  return`<div class="sep-3h"  style="left:${t.pct.toFixed(2)}%"></div>`;
-      return`<div class="sep-1h" style="left:${t.pct.toFixed(2)}%"></div>`;
+      if(t.isDay) return`<div class="sep-day" style="left:${t.pct.toFixed(3)}%"></div>`;
+      if(t.is3h)  return`<div class="sep-3h"  style="left:${t.pct.toFixed(3)}%"></div>`;
+      return`<div class="sep-1h" style="left:${t.pct.toFixed(3)}%"></div>`;
     }).join('');
-    const nowHtml=`<div class="now-line" style="left:${nowPct.toFixed(2)}%"></div>`;
+    const nowHtml=`<div class="now-line" style="left:${nowPct.toFixed(3)}%"></div>`;
     return`<div class="chart-row">
       <div class="row-icon" title="${p}">${ICONS[p]||''}</div>
       <div class="row-timeline">${segsHtml}${sepsHtml}${nowHtml}</div>
@@ -393,11 +385,11 @@ function buildChart(code,name,warnings){
     const h=t.label.getHours();
     if(t.isDay){
       const lbl=t.label.toLocaleDateString('pt-PT',{day:'2-digit',month:'short'});
-      return`<div class="axis-date-label" style="left:${t.pct.toFixed(2)}%">${lbl}</div>`;
+      return`<div class="axis-date-label" style="left:${t.pct.toFixed(3)}%">${lbl}</div>`;
     }else if(t.is3h){
-      return`<div class="axis-3h-label" style="left:${t.pct.toFixed(2)}%">${String(h).padStart(2,'0')}h</div>`;
+      return`<div class="axis-3h-label" style="left:${t.pct.toFixed(3)}%">${String(h).padStart(2,'0')}h</div>`;
     }else{
-      return`<div class="axis-1h-label" style="left:${t.pct.toFixed(2)}%">${String(h).padStart(2,'0')}h</div>`;
+      return`<div class="axis-1h-label" style="left:${t.pct.toFixed(3)}%">${String(h).padStart(2,'0')}h</div>`;
     }
   }).join('');
 
@@ -427,6 +419,18 @@ async function loadWarnings(){
     const rd={MRM:[],MCS:[]};
     data.forEach(w=>{if(rd.hasOwnProperty(w.idAreaAviso))rd[w.idAreaAviso].push(w)});
     content.innerHTML=Object.entries(REGIONS).map(([code,name])=>buildChart(code,name,rd[code])).join('');
+    // Ajusta altura das rows: cada slot 1h deve ter largura = 1/3 da altura da row
+    // slot_width = timeline_width / 72  →  height = 3 * slot_width
+    requestAnimationFrame(()=>{
+      const tl=content.querySelector('.row-timeline');
+      if(tl){
+        const slotW=tl.getBoundingClientRect().width/72;
+        const h=Math.round(slotW*3);
+        const rowH=Math.max(16,Math.min(h,40));
+        document.querySelectorAll('.chart-row').forEach(r=>r.style.height=rowH+'px');
+        document.querySelectorAll('.row-icon svg').forEach(s=>{s.style.width=(rowH-6)+'px';s.style.height=(rowH-6)+'px';});
+      }
+    });
     const now=new Date();
     timeEl.textContent='Atualizado: '+now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'});
     if(window.parent!==window)
