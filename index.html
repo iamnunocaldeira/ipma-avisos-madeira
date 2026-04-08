@@ -5,60 +5,62 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Avisos IPMA — Madeira</title>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { background: transparent; font-family: Arial, sans-serif; font-size: 13px; color: #222; }
-body { padding: 8px; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;font-family:Arial,sans-serif;font-size:13px;color:#222}
+body{padding:8px}
 
-.header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-.logo { background: #004a8f; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 5px 8px; border-radius: 5px; flex-shrink: 0; }
-.header-title { font-size: 13px; font-weight: 700; color: #1a2533; }
-.header-sub { font-size: 11px; color: #666; margin-top: 1px; }
-.header-right { margin-left: auto; text-align: right; }
-.update-lbl { font-size: 10px; color: #999; }
-.refresh-btn { font-size: 10px; color: #555; background: #f4f6f8; border: 1px solid #ccc; border-radius: 4px; padding: 2px 7px; cursor: pointer; margin-top: 3px; display: inline-block; }
-.refresh-btn:hover { background: #e8edf2; }
+.header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.logo{background:#004a8f;color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;padding:5px 8px;border-radius:5px;flex-shrink:0}
+.header-title{font-size:13px;font-weight:700;color:#1a2533}
+.header-sub{font-size:11px;color:#666;margin-top:1px}
+.header-right{margin-left:auto;text-align:right}
+.update-lbl{font-size:10px;color:#999}
+.refresh-btn{font-size:10px;color:#555;background:#f4f6f8;border:1px solid #ccc;border-radius:4px;padding:2px 7px;cursor:pointer;margin-top:3px;display:inline-block}
+.refresh-btn:hover{background:#e8edf2}
 
-.region-block { margin-bottom: 16px; }
-.region-label { font-size: 11px; font-weight: 700; color: #004a8f; letter-spacing: 0.3px; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
-.region-code-tag { font-size: 9px; font-weight: 700; background: #004a8f; color: #fff; border-radius: 3px; padding: 1px 5px; letter-spacing: 0.5px; }
-.level-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; box-shadow: 0 0 0 1.5px rgba(0,0,0,0.15); }
+.region-block{margin-bottom:14px}
+.region-label{font-size:11px;font-weight:700;color:#004a8f;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.region-code-tag{font-size:9px;font-weight:700;background:#004a8f;color:#fff;border-radius:3px;padding:1px 5px;letter-spacing:.5px}
+.level-dot{display:inline-block;width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(0,0,0,.15)}
 
-.chart-wrap { border: 1px solid #bbb; border-radius: 3px; overflow: hidden; background: #fff; }
+.chart-wrap{border:1px solid #bbb;border-radius:3px;overflow:hidden;background:#fff}
+.chart-row{display:flex;align-items:stretch;border-bottom:1px solid #ddd;height:24px}
+.chart-row:last-of-type{border-bottom:none}
+.row-icon{width:32px;min-width:32px;display:flex;align-items:center;justify-content:center;background:#f0f2f5;border-right:1px solid #ccc;flex-shrink:0;padding:2px}
+.row-icon svg{width:18px;height:18px}
+.row-timeline{flex:1;position:relative;overflow:hidden}
 
-.chart-row { display: flex; align-items: stretch; border-bottom: 1px solid #ddd; height: 22px; }
-.chart-row:last-of-type { border-bottom: none; }
+/* colour segments */
+.seg{position:absolute;top:0;bottom:0}
+.seg-green {background:#4caf50}
+.seg-yellow{background:#fdd835}
+.seg-orange{background:#ff8c00}
+.seg-red   {background:#e53935}
+.seg+.seg{border-left:1px solid rgba(0,0,0,.06)}
 
-.row-icon { width: 28px; min-width: 28px; display: flex; align-items: center; justify-content: center; background: #f0f2f5; border-right: 1px solid #dde2e8; font-size: 12px; flex-shrink: 0; }
+/* separators */
+.sep-3h {position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.18);z-index:2;pointer-events:none}
+.sep-day{position:absolute;top:0;bottom:0;width:2px;background:#111;z-index:3;pointer-events:none}
+.now-line{position:absolute;top:0;bottom:0;width:2px;background:rgba(0,80,200,.55);z-index:4;pointer-events:none}
 
-.row-timeline { flex: 1; position: relative; overflow: hidden; }
+/* axis */
+.axis-row{display:flex;border-top:1px solid #bbb;background:#f8f9fa;height:18px}
+.axis-spacer{width:32px;min-width:32px;border-right:1px solid #ccc;flex-shrink:0}
+.axis-dates{flex:1;position:relative}
+.axis-date-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:9px;font-weight:700;color:#222;white-space:nowrap}
+.axis-hour-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:8px;color:#888;white-space:nowrap}
 
-.seg { position: absolute; top: 0; bottom: 0; }
-.seg-green  { background: #4caf50; }
-.seg-yellow { background: #fdd835; }
-.seg-orange { background: #ff8c00; }
-.seg-red    { background: #e53935; }
-.seg + .seg { border-left: 1px solid rgba(0,0,0,0.07); }
+.legend{display:flex;flex-wrap:wrap;gap:5px 12px;margin-top:8px}
+.legend-item{display:flex;align-items:center;gap:4px;font-size:10px;color:#555}
+.legend-sq{width:11px;height:11px;border-radius:2px;flex-shrink:0}
 
-.day-sep { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(0,0,0,0.35); z-index: 2; pointer-events: none; }
-.now-line { position: absolute; top: 0; bottom: 0; width: 2px; background: rgba(0,80,200,0.5); z-index: 3; pointer-events: none; }
+.footer{margin-top:6px;font-size:9px;color:#aaa;text-align:center}
+.footer a{color:#004a8f;text-decoration:none}
 
-.axis-row { display: flex; border-top: 1px solid #bbb; background: #f8f9fa; height: 18px; }
-.axis-spacer { width: 28px; min-width: 28px; border-right: 1px solid #dde2e8; flex-shrink: 0; }
-.axis-dates { flex: 1; position: relative; }
-.axis-date-label { position: absolute; top: 50%; transform: translate(-50%, -50%); font-size: 9px; font-weight: 700; color: #333; white-space: nowrap; }
-.axis-hour-label { position: absolute; top: 50%; transform: translate(-50%, -50%); font-size: 8px; color: #999; white-space: nowrap; }
-
-.legend { display: flex; flex-wrap: wrap; gap: 5px 12px; margin-top: 8px; }
-.legend-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #555; }
-.legend-sq { width: 11px; height: 11px; border-radius: 2px; flex-shrink: 0; }
-
-.footer { margin-top: 6px; font-size: 9px; color: #aaa; text-align: center; }
-.footer a { color: #004a8f; text-decoration: none; }
-
-.status { background: #f4f6f8; border: 1px solid #dde2e8; border-radius: 6px; padding: 20px; text-align: center; color: #666; font-size: 12px; }
-.status.error { background: #fff0f0; border-color: #f5a0a0; color: #900; }
-.spinner { width: 18px; height: 18px; border: 2px solid #dde2e8; border-top-color: #004a8f; border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 8px; }
-@keyframes spin { to { transform: rotate(360deg); } }
+.status{background:#f4f6f8;border:1px solid #dde2e8;border-radius:6px;padding:20px;text-align:center;color:#666;font-size:12px}
+.status.error{background:#fff0f0;border-color:#f5a0a0;color:#900}
+.spinner{width:18px;height:18px;border:2px solid #dde2e8;border-top-color:#004a8f;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -92,148 +94,168 @@ body { padding: 8px; }
 </div>
 
 <script>
-const REGIONS = {
-  MRM: 'Regiões Montanhosas da Madeira',
-  MCS: 'Costa Sul da Madeira'
+/* ── IPMA-style SVG icons (inline, monochrome — coloured by awareness level context) ── */
+const ICONS = {
+  'Trovoada': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 10a7 7 0 1 0-13.5 2.4A4 4 0 0 0 7 20h9a5 5 0 0 0 1-9.9"/>
+    <polyline points="13 11 10 16 14 16 11 21"/>
+  </svg>`,
+  'Precipitação': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 17.6A5 5 0 0 0 18 8h-1.3A7 7 0 1 0 4 14.9"/>
+    <line x1="8" y1="19" x2="8" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="16" y1="19" x2="16" y2="21"/>
+  </svg>`,
+  'Vento': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9.6 8A3 3 0 1 1 12 12H2"/>
+    <path d="M14.8 16A3 3 0 1 0 17 12H2"/>
+    <line x1="2" y1="10" x2="10" y2="10"/>
+  </svg>`,
+  'Agitação Marítima': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>
+    <path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>
+    <path d="M2 7c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>
+  </svg>`,
+  'Neve': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="12" y1="2" x2="12" y2="22"/>
+    <path d="M17 7l-5 5-5-5"/><path d="M17 17l-5-5-5 5"/>
+    <path d="M2 12l5-3 5 3 5-3 5 3"/>
+    <path d="M2 12l5 3 5-3 5 3 5-3"/>
+  </svg>`,
+  'Tempo Frio': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26A6 6 0 1 0 14 14.76z"/>
+  </svg>`,
+  'Tempo Quente': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="4"/>
+    <line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+    <line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+  </svg>`,
+  'Nevoeiro': `<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="3" y1="10" x2="21" y2="10"/>
+    <line x1="3" y1="14" x2="21" y2="14"/>
+    <line x1="3" y1="18" x2="15" y2="18"/>
+    <path d="M7 6a5 5 0 0 1 10 0"/>
+  </svg>`
 };
 
 const PHENOMENA = [
-  { key: 'Trovoada',          icon: '⛈' },
-  { key: 'Precipitação',      icon: '🌧' },
-  { key: 'Vento',             icon: '💨' },
-  { key: 'Agitação Marítima', icon: '🌊' },
-  { key: 'Neve',              icon: '❄' },
-  { key: 'Tempo Frio',        icon: '🌡' },
-  { key: 'Tempo Quente',      icon: '☀' },
-  { key: 'Nevoeiro',          icon: '🌫' },
+  'Trovoada','Precipitação','Vento','Agitação Marítima','Neve','Tempo Frio','Tempo Quente','Nevoeiro'
 ];
 
 const TYPE_MAP = {
-  'Rain': 'Precipitação', 'Wind': 'Vento', 'Fog': 'Nevoeiro',
-  'Snow/Ice': 'Neve', 'Thunderstorm': 'Trovoada',
-  'Coastal Event': 'Agitação Marítima',
-  'High Temperature': 'Tempo Quente', 'Low Temperature': 'Tempo Frio'
+  'Rain':'Precipitação','Wind':'Vento','Fog':'Nevoeiro','Snow/Ice':'Neve',
+  'Thunderstorm':'Trovoada','Coastal Event':'Agitação Marítima',
+  'High Temperature':'Tempo Quente','Low Temperature':'Tempo Frio'
 };
 
-const LVL = { red: 4, orange: 3, yellow: 2, green: 1 };
-const CLS = { red: 'seg-red', orange: 'seg-orange', yellow: 'seg-yellow', green: 'seg-green' };
-const DOT = { green: '#4caf50', yellow: '#fdd835', orange: '#ff8c00', red: '#e53935' };
+const REGIONS = { MRM:'Regiões Montanhosas da Madeira', MCS:'Costa Sul da Madeira' };
+const LVL  = {red:4,orange:3,yellow:2,green:1};
+const CLS  = {red:'seg-red',orange:'seg-orange',yellow:'seg-yellow',green:'seg-green'};
+const DOTC = {green:'#4caf50',yellow:'#fdd835',orange:'#ff8c00',red:'#e53935'};
 
-function normType(t)  { return TYPE_MAP[t] || t; }
-function normLevel(l) { return (l || 'green').toLowerCase(); }
+function normType(t)  { return TYPE_MAP[t]||t }
+function normLevel(l) { return (l||'green').toLowerCase() }
 
-function buildChart(regionCode, regionName, warnings) {
+function buildChart(code, name, warnings) {
   const now = new Date();
 
-  // Window: from now rounded down to last 6h mark, +78h
-  const WINDOW_H = 78;
-  const SLOT_MIN = 30;
-  const SLOTS = (WINDOW_H * 60) / SLOT_MIN;
+  /* Window: align t0 to previous 3h boundary, show 72h */
+  const STEP_H  = 3;          // 3-hour slots
+  const WINDOW_H = 72;
+  const SLOTS = WINDOW_H / STEP_H; // 24 slots
   const t0 = new Date(now);
-  t0.setMinutes(Math.floor(t0.getMinutes() / SLOT_MIN) * SLOT_MIN, 0, 0);
-  // step back to last 6h boundary
-  t0.setHours(Math.floor(t0.getHours() / 6) * 6, 0, 0, 0);
-  const tEnd = new Date(t0.getTime() + SLOTS * SLOT_MIN * 60000);
+  t0.setHours(Math.floor(t0.getHours()/STEP_H)*STEP_H, 0, 0, 0);
+  const tEnd = new Date(t0.getTime() + WINDOW_H*3600000);
 
-  // Build slot arrays per phenomenon
+  /* Build level grids per phenomenon */
   const grids = {};
-  PHENOMENA.forEach(p => { grids[p.key] = new Array(SLOTS).fill('green'); });
+  PHENOMENA.forEach(p => { grids[p] = new Array(SLOTS).fill('green') });
 
   warnings.forEach(w => {
     const type  = normType(w.awarenessTypeName);
     const level = normLevel(w.awarenessLevelID);
-    if (!grids[type] || (LVL[level] || 0) <= 1) return; // skip green
+    if (!grids[type] || level==='green') return;
     const wS = w.startTime ? new Date(w.startTime) : null;
     const wE = w.endTime   ? new Date(w.endTime)   : null;
-    if (!wS || !wE) return;
-    for (let s = 0; s < SLOTS; s++) {
-      const st = new Date(t0.getTime() + s * SLOT_MIN * 60000);
-      const en = new Date(st.getTime() + SLOT_MIN * 60000);
-      if (st < wE && en > wS && (LVL[level] || 0) > (LVL[grids[type][s]] || 0)) {
+    if (!wS||!wE) return;
+    for (let s=0; s<SLOTS; s++) {
+      const st = new Date(t0.getTime() + s*STEP_H*3600000);
+      const en = new Date(st.getTime() + STEP_H*3600000);
+      if (st<wE && en>wS && (LVL[level]||0)>(LVL[grids[type][s]]||0))
         grids[type][s] = level;
-      }
     }
   });
 
-  // Merge slots → segments
+  /* Merge adjacent same-level slots into segments */
   function toSegs(slots) {
-    const out = [];
-    let i = 0;
-    while (i < slots.length) {
-      let j = i;
-      while (j < slots.length && slots[j] === slots[i]) j++;
-      out.push({ lv: slots[i], pct: i / slots.length * 100, w: (j - i) / slots.length * 100 });
-      i = j;
+    const out=[]; let i=0;
+    while(i<slots.length){
+      let j=i;
+      while(j<slots.length&&slots[j]===slots[i])j++;
+      out.push({lv:slots[i], pct:i/slots.length*100, w:(j-i)/slots.length*100});
+      i=j;
     }
     return out;
   }
 
-  // Day separator positions
-  const daySeps = [];
-  let d = new Date(t0); d.setDate(d.getDate() + 1); d.setHours(0,0,0,0);
-  while (d < tEnd) {
-    daySeps.push({ pct: (d - t0) / (tEnd - t0) * 100, label: d });
-    d = new Date(d.getTime() + 86400000);
+  /* 3h tick separators (every slot boundary) */
+  const ticks3h = [];
+  for (let s=1; s<SLOTS; s++) {
+    const t = new Date(t0.getTime()+s*STEP_H*3600000);
+    const pct = s/SLOTS*100;
+    const isDay = t.getHours()===0;
+    ticks3h.push({ pct, isDay, label: t });
   }
 
-  // Hour ticks every 6h
-  const hourTicks = [];
-  let tick = new Date(t0);
-  tick.setHours(tick.getHours() + 6, 0, 0, 0);
-  while (tick < tEnd) {
-    const pct = (tick - t0) / (tEnd - t0) * 100;
-    // only show if not too close to a day label (within 5%)
-    const nearDay = daySeps.some(s => Math.abs(s.pct - pct) < 5);
-    if (!nearDay && pct > 1 && pct < 99) hourTicks.push({ pct, h: tick.getHours() });
-    tick = new Date(tick.getTime() + 6 * 3600000);
-  }
+  /* "Now" line */
+  const nowPct = Math.max(0, Math.min(100, (now-t0)/(tEnd-t0)*100));
 
-  // "Now" line
-  const nowPct = (now - t0) / (tEnd - t0) * 100;
-
-  // Max level across all non-green warnings (active)
-  const maxLv = warnings.reduce((best, w) => {
-    const l = normLevel(w.awarenessLevelID);
-    return (LVL[l] || 0) > (LVL[best] || 0) ? l : best;
+  /* Max level */
+  const maxLv = warnings.reduce((best,w) => {
+    const l=normLevel(w.awarenessLevelID);
+    return (LVL[l]||0)>(LVL[best]||0)?l:best;
   }, 'green');
 
-  // Build rows HTML
+  /* Build rows */
   const rowsHtml = PHENOMENA.map(p => {
-    const segs = toSegs(grids[p.key]);
-    const segsHtml = segs.map(s =>
+    const segs = toSegs(grids[p]);
+    const segsHtml = segs.map(s=>
       `<div class="seg ${CLS[s.lv]}" style="left:${s.pct.toFixed(2)}%;width:${s.w.toFixed(2)}%"></div>`
     ).join('');
-    const sepsHtml = daySeps.map(s =>
-      `<div class="day-sep" style="left:${s.pct.toFixed(2)}%"></div>`
+    const sepsHtml = ticks3h.map(t=>
+      `<div class="${t.isDay?'sep-day':'sep-3h'}" style="left:${t.pct.toFixed(2)}%"></div>`
     ).join('');
-    const nowHtml = nowPct > 0 && nowPct < 100
-      ? `<div class="now-line" style="left:${nowPct.toFixed(2)}%"></div>` : '';
+    const nowHtml = `<div class="now-line" style="left:${nowPct.toFixed(2)}%"></div>`;
+    const icon = ICONS[p]||'';
     return `<div class="chart-row">
-      <div class="row-icon" title="${p.key}">${p.icon}</div>
+      <div class="row-icon" title="${p}">${icon}</div>
       <div class="row-timeline">${segsHtml}${sepsHtml}${nowHtml}</div>
     </div>`;
   }).join('');
 
-  // Axis HTML
-  const dayAxisHtml = daySeps.map(s => {
-    const lbl = s.label.toLocaleDateString('pt-PT', { day: '2-digit', month: 'short' });
-    return `<div class="axis-date-label" style="left:${s.pct.toFixed(2)}%">${lbl}</div>`;
+  /* Axis: date labels at midnight, hour labels at 6h/12h/18h */
+  const axisHtml = ticks3h.map(t => {
+    const h = t.label.getHours();
+    if (h===0) {
+      const lbl = t.label.toLocaleDateString('pt-PT',{day:'2-digit',month:'short'});
+      return `<div class="axis-date-label" style="left:${t.pct.toFixed(2)}%">${lbl}</div>`;
+    } else if (h===6||h===12||h===18) {
+      return `<div class="axis-hour-label" style="left:${t.pct.toFixed(2)}%">${String(h).padStart(2,'0')}h</div>`;
+    }
+    return '';
   }).join('');
-  const hourAxisHtml = hourTicks.map(t =>
-    `<div class="axis-hour-label" style="left:${t.pct.toFixed(2)}%">${String(t.h).padStart(2,'0')}h</div>`
-  ).join('');
 
   return `<div class="region-block">
     <div class="region-label">
-      <span class="region-code-tag">${regionCode}</span>
-      ${regionName}
-      <span class="level-dot" style="background:${DOT[maxLv]}"></span>
+      <span class="region-code-tag">${code}</span>
+      ${name}
+      <span class="level-dot" style="background:${DOTC[maxLv]}"></span>
     </div>
     <div class="chart-wrap">
       ${rowsHtml}
       <div class="axis-row">
         <div class="axis-spacer"></div>
-        <div class="axis-dates">${dayAxisHtml}${hourAxisHtml}</div>
+        <div class="axis-dates">${axisHtml}</div>
       </div>
     </div>
   </div>`;
@@ -244,37 +266,28 @@ async function loadWarnings() {
   const timeEl  = document.getElementById('update-time');
   try {
     const res  = await fetch('https://api.ipma.pt/open-data/forecast/warnings/warnings_www.json');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
+    if (!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
-
-    const regionData = { MRM: [], MCS: [] };
-    data.forEach(w => {
-      if (regionData.hasOwnProperty(w.idAreaAviso)) regionData[w.idAreaAviso].push(w);
-    });
-
+    const rd   = {MRM:[],MCS:[]};
+    data.forEach(w=>{ if(rd.hasOwnProperty(w.idAreaAviso)) rd[w.idAreaAviso].push(w) });
     content.innerHTML = Object.entries(REGIONS)
-      .map(([code, name]) => buildChart(code, name, regionData[code]))
-      .join('');
-
-    const now = new Date();
-    timeEl.textContent = 'Atualizado: '
-      + now.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
-
-    if (window.parent !== window)
-      window.parent.postMessage({ type: 'resize', height: document.body.scrollHeight }, '*');
-
-  } catch (err) {
-    content.innerHTML = `<div class="status error">
+      .map(([code,name])=>buildChart(code,name,rd[code])).join('');
+    const now=new Date();
+    timeEl.textContent='Atualizado: '+now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'});
+    if(window.parent!==window)
+      window.parent.postMessage({type:'resize',height:document.body.scrollHeight},'*');
+  } catch(err) {
+    content.innerHTML=`<div class="status error">
       <b>Erro ao carregar avisos do IPMA</b><br>
       <small>${err.message}</small><br><br>
       <button class="refresh-btn" onclick="loadWarnings()">↻ Tentar novamente</button>
     </div>`;
-    timeEl.textContent = 'Erro';
+    timeEl.textContent='Erro';
   }
 }
 
 loadWarnings();
-setInterval(loadWarnings, 10 * 60 * 1000);
+setInterval(loadWarnings, 10*60*1000);
 </script>
 </body>
 </html>
