@@ -26,7 +26,7 @@ body{padding:8px}
 .level-dot{display:inline-block;width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(0,0,0,.15)}
 
 .chart-wrap{border:1px solid #bbb;border-radius:3px;overflow:hidden;background:#fff}
-.chart-row{display:flex;align-items:stretch;border-bottom:1px solid #ddd;height:24px}
+.chart-row{display:flex;align-items:stretch;border-bottom:1px solid rgba(0,0,0,.18);height:24px}
 .chart-row:last-of-type{border-bottom:none}
 .row-icon{width:32px;min-width:32px;display:flex;align-items:center;justify-content:center;background:#f0f2f5;border-right:1px solid #ccc;flex-shrink:0;padding:2px}
 .row-icon svg{width:18px;height:18px}
@@ -39,8 +39,8 @@ body{padding:8px}
 .seg-red   {background:#e53935}
 .seg+.seg{border-left:1px solid rgba(0,0,0,.06)}
 
-.sep-1h {position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.08);z-index:1;pointer-events:none}
-.sep-3h {position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.22);z-index:2;pointer-events:none}
+.sep-1h {position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.18);z-index:1;pointer-events:none}
+.sep-3h {position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.45);z-index:2;pointer-events:none}
 .sep-day{position:absolute;top:0;bottom:0;width:2px;background:#111;z-index:3;pointer-events:none}
 .now-line{position:absolute;top:0;bottom:0;width:2px;background:rgba(0,80,200,.55);z-index:4;pointer-events:none}
 
@@ -351,19 +351,19 @@ function buildChart(code,name,warnings){
     return out;
   }
 
+  // ticks a cada 3h (slots existentes)
   const ticks=[];
   for(let s=1;s<SLOTS;s++){
     const t=new Date(t0.getTime()+s*STEP_H*3600000);
     ticks.push({pct:s/SLOTS*100,isDay:t.getHours()===0,is3h:true,label:t});
   }
-  // add 1h intermediate ticks
+  // ticks intermédios de 1h
   for(let s=0;s<SLOTS;s++){
     for(let h=1;h<STEP_H;h++){
       const ms=t0.getTime()+(s*STEP_H+h)*3600000;
       if(ms>=tEnd.getTime())continue;
-      const t=new Date(ms);
       const pct=(ms-t0.getTime())/(tEnd-t0)*100;
-      ticks.push({pct,isDay:false,is3h:false,label:t});
+      ticks.push({pct,isDay:false,is3h:false,label:new Date(ms)});
     }
   }
   ticks.sort((a,b)=>a.pct-b.pct);
@@ -379,7 +379,7 @@ function buildChart(code,name,warnings){
     const segsHtml=segs.map(s=>`<div class="seg ${CLS[s.lv]}" style="left:${s.pct.toFixed(2)}%;width:${s.w.toFixed(2)}%"></div>`).join('');
     const sepsHtml=ticks.map(t=>{
       if(t.isDay) return`<div class="sep-day" style="left:${t.pct.toFixed(2)}%"></div>`;
-      if(t.is3h)  return`<div class="sep-3h" style="left:${t.pct.toFixed(2)}%"></div>`;
+      if(t.is3h)  return`<div class="sep-3h"  style="left:${t.pct.toFixed(2)}%"></div>`;
       return`<div class="sep-1h" style="left:${t.pct.toFixed(2)}%"></div>`;
     }).join('');
     const nowHtml=`<div class="now-line" style="left:${nowPct.toFixed(2)}%"></div>`;
