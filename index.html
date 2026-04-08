@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avisos IPMA — Madeira</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: transparent; font-family: Arial, sans-serif; font-size: 13px; color: #222; }
+body { padding: 8px; }
+
+.header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.logo { background: #004a8f; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 5px 8px; border-radius: 5px; flex-shrink: 0; }
+.header-title { font-size: 13px; font-weight: 700; color: #1a2533; }
+.header-sub { font-size: 11px; color: #666; margin-top: 1px; }
+.header-right { margin-left: auto; text-align: right; }
+.update-lbl { font-size: 10px; color: #999; }
+.refresh-btn { font-size: 10px; color: #555; background: #f4f6f8; border: 1px solid #ccc; border-radius: 4px; padding: 2px 7px; cursor: pointer; margin-top: 3px; display: inline-block; }
+.refresh-btn:hover { background: #e8edf2; }
+
+.region-block { margin-bottom: 16px; }
+.region-label { font-size: 11px; font-weight: 700; color: #004a8f; letter-spacing: 0.3px; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
+.region-code-tag { font-size: 9px; font-weight: 700; background: #004a8f; color: #fff; border-radius: 3px; padding: 1px 5px; letter-spacing: 0.5px; }
+.level-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; box-shadow: 0 0 0 1.5px rgba(0,0,0,0.15); }
+
+.chart-wrap { border: 1px solid #bbb; border-radius: 3px; overflow: hidden; background: #fff; }
+
+.chart-row { display: flex; align-items: stretch; border-bottom: 1px solid #ddd; height: 22px; }
+.chart-row:last-of-type { border-bottom: none; }
+
+.row-icon { width: 28px; min-width: 28px; display: flex; align-items: center; justify-content: center; background: #f0f2f5; border-right: 1px solid #dde2e8; font-size: 12px; flex-shrink: 0; }
+
+.row-timeline { flex: 1; position: relative; overflow: hidden; }
+
+.seg { position: absolute; top: 0; bottom: 0; }
+.seg-green  { background: #4caf50; }
+.seg-yellow { background: #fdd835; }
+.seg-orange { background: #ff8c00; }
+.seg-red    { background: #e53935; }
+.seg + .seg { border-left: 1px solid rgba(0,0,0,0.07); }
+
+.day-sep { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(0,0,0,0.35); z-index: 2; pointer-events: none; }
+.now-line { position: absolute; top: 0; bottom: 0; width: 2px; background: rgba(0,80,200,0.5); z-index: 3; pointer-events: none; }
+
+.axis-row { display: flex; border-top: 1px solid #bbb; background: #f8f9fa; height: 18px; }
+.axis-spacer { width: 28px; min-width: 28px; border-right: 1px solid #dde2e8; flex-shrink: 0; }
+.axis-dates { flex: 1; position: relative; }
+.axis-date-label { position: absolute; top: 50%; transform: translate(-50%, -50%); font-size: 9px; font-weight: 700; color: #333; white-space: nowrap; }
+.axis-hour-label { position: absolute; top: 50%; transform: translate(-50%, -50%); font-size: 8px; color: #999; white-space: nowrap; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 5px 12px; margin-top: 8px; }
+.legend-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #555; }
+.legend-sq { width: 11px; height: 11px; border-radius: 2px; flex-shrink: 0; }
+
+.footer { margin-top: 6px; font-size: 9px; color: #aaa; text-align: center; }
+.footer a { color: #004a8f; text-decoration: none; }
+
+.status { background: #f4f6f8; border: 1px solid #dde2e8; border-radius: 6px; padding: 20px; text-align: center; color: #666; font-size: 12px; }
+.status.error { background: #fff0f0; border-color: #f5a0a0; color: #900; }
+.spinner { width: 18px; height: 18px; border: 2px solid #dde2e8; border-top-color: #004a8f; border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 8px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">IPMA</div>
+  <div>
+    <div class="header-title">Avisos Meteorológicos — Madeira</div>
+    <div class="header-sub">Regiões Montanhosas &amp; Costa Sul · próximas 72h</div>
+  </div>
+  <div class="header-right">
+    <div class="update-lbl" id="update-time">—</div>
+    <button class="refresh-btn" onclick="loadWarnings()">↻ atualizar</button>
+  </div>
+</div>
+
+<div id="content">
+  <div class="status"><div class="spinner"></div>A carregar avisos do IPMA...</div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-sq" style="background:#4caf50"></div>Verde — sem aviso</div>
+  <div class="legend-item"><div class="legend-sq" style="background:#fdd835"></div>Amarelo</div>
+  <div class="legend-item"><div class="legend-sq" style="background:#ff8c00"></div>Laranja</div>
+  <div class="legend-item"><div class="legend-sq" style="background:#e53935"></div>Vermelho</div>
+</div>
+
+<div class="footer">
+  Fonte: <a href="https://api.ipma.pt" target="_blank" rel="noopener">IPMA Open Data</a>
+  &nbsp;·&nbsp; Atualização automática a cada 10 min
+</div>
+
+<script>
+const REGIONS = {
+  MRM: 'Regiões Montanhosas da Madeira',
+  MCS: 'Costa Sul da Madeira'
+};
+
+const PHENOMENA = [
+  { key: 'Trovoada',          icon: '⛈' },
+  { key: 'Precipitação',      icon: '🌧' },
+  { key: 'Vento',             icon: '💨' },
+  { key: 'Agitação Marítima', icon: '🌊' },
+  { key: 'Neve',              icon: '❄' },
+  { key: 'Tempo Frio',        icon: '🌡' },
+  { key: 'Tempo Quente',      icon: '☀' },
+  { key: 'Nevoeiro',          icon: '🌫' },
+];
+
+const TYPE_MAP = {
+  'Rain': 'Precipitação', 'Wind': 'Vento', 'Fog': 'Nevoeiro',
+  'Snow/Ice': 'Neve', 'Thunderstorm': 'Trovoada',
+  'Coastal Event': 'Agitação Marítima',
+  'High Temperature': 'Tempo Quente', 'Low Temperature': 'Tempo Frio'
+};
+
+const LVL = { red: 4, orange: 3, yellow: 2, green: 1 };
+const CLS = { red: 'seg-red', orange: 'seg-orange', yellow: 'seg-yellow', green: 'seg-green' };
+const DOT = { green: '#4caf50', yellow: '#fdd835', orange: '#ff8c00', red: '#e53935' };
+
+function normType(t)  { return TYPE_MAP[t] || t; }
+function normLevel(l) { return (l || 'green').toLowerCase(); }
+
+function buildChart(regionCode, regionName, warnings) {
+  const now = new Date();
+
+  // Window: from now rounded down to last 6h mark, +78h
+  const WINDOW_H = 78;
+  const SLOT_MIN = 30;
+  const SLOTS = (WINDOW_H * 60) / SLOT_MIN;
+  const t0 = new Date(now);
+  t0.setMinutes(Math.floor(t0.getMinutes() / SLOT_MIN) * SLOT_MIN, 0, 0);
+  // step back to last 6h boundary
+  t0.setHours(Math.floor(t0.getHours() / 6) * 6, 0, 0, 0);
+  const tEnd = new Date(t0.getTime() + SLOTS * SLOT_MIN * 60000);
+
+  // Build slot arrays per phenomenon
+  const grids = {};
+  PHENOMENA.forEach(p => { grids[p.key] = new Array(SLOTS).fill('green'); });
+
+  warnings.forEach(w => {
+    const type  = normType(w.awarenessTypeName);
+    const level = normLevel(w.awarenessLevelID);
+    if (!grids[type] || (LVL[level] || 0) <= 1) return; // skip green
+    const wS = w.startTime ? new Date(w.startTime) : null;
+    const wE = w.endTime   ? new Date(w.endTime)   : null;
+    if (!wS || !wE) return;
+    for (let s = 0; s < SLOTS; s++) {
+      const st = new Date(t0.getTime() + s * SLOT_MIN * 60000);
+      const en = new Date(st.getTime() + SLOT_MIN * 60000);
+      if (st < wE && en > wS && (LVL[level] || 0) > (LVL[grids[type][s]] || 0)) {
+        grids[type][s] = level;
+      }
+    }
+  });
+
+  // Merge slots → segments
+  function toSegs(slots) {
+    const out = [];
+    let i = 0;
+    while (i < slots.length) {
+      let j = i;
+      while (j < slots.length && slots[j] === slots[i]) j++;
+      out.push({ lv: slots[i], pct: i / slots.length * 100, w: (j - i) / slots.length * 100 });
+      i = j;
+    }
+    return out;
+  }
+
+  // Day separator positions
+  const daySeps = [];
+  let d = new Date(t0); d.setDate(d.getDate() + 1); d.setHours(0,0,0,0);
+  while (d < tEnd) {
+    daySeps.push({ pct: (d - t0) / (tEnd - t0) * 100, label: d });
+    d = new Date(d.getTime() + 86400000);
+  }
+
+  // Hour ticks every 6h
+  const hourTicks = [];
+  let tick = new Date(t0);
+  tick.setHours(tick.getHours() + 6, 0, 0, 0);
+  while (tick < tEnd) {
+    const pct = (tick - t0) / (tEnd - t0) * 100;
+    // only show if not too close to a day label (within 5%)
+    const nearDay = daySeps.some(s => Math.abs(s.pct - pct) < 5);
+    if (!nearDay && pct > 1 && pct < 99) hourTicks.push({ pct, h: tick.getHours() });
+    tick = new Date(tick.getTime() + 6 * 3600000);
+  }
+
+  // "Now" line
+  const nowPct = (now - t0) / (tEnd - t0) * 100;
+
+  // Max level across all non-green warnings (active)
+  const maxLv = warnings.reduce((best, w) => {
+    const l = normLevel(w.awarenessLevelID);
+    return (LVL[l] || 0) > (LVL[best] || 0) ? l : best;
+  }, 'green');
+
+  // Build rows HTML
+  const rowsHtml = PHENOMENA.map(p => {
+    const segs = toSegs(grids[p.key]);
+    const segsHtml = segs.map(s =>
+      `<div class="seg ${CLS[s.lv]}" style="left:${s.pct.toFixed(2)}%;width:${s.w.toFixed(2)}%"></div>`
+    ).join('');
+    const sepsHtml = daySeps.map(s =>
+      `<div class="day-sep" style="left:${s.pct.toFixed(2)}%"></div>`
+    ).join('');
+    const nowHtml = nowPct > 0 && nowPct < 100
+      ? `<div class="now-line" style="left:${nowPct.toFixed(2)}%"></div>` : '';
+    return `<div class="chart-row">
+      <div class="row-icon" title="${p.key}">${p.icon}</div>
+      <div class="row-timeline">${segsHtml}${sepsHtml}${nowHtml}</div>
+    </div>`;
+  }).join('');
+
+  // Axis HTML
+  const dayAxisHtml = daySeps.map(s => {
+    const lbl = s.label.toLocaleDateString('pt-PT', { day: '2-digit', month: 'short' });
+    return `<div class="axis-date-label" style="left:${s.pct.toFixed(2)}%">${lbl}</div>`;
+  }).join('');
+  const hourAxisHtml = hourTicks.map(t =>
+    `<div class="axis-hour-label" style="left:${t.pct.toFixed(2)}%">${String(t.h).padStart(2,'0')}h</div>`
+  ).join('');
+
+  return `<div class="region-block">
+    <div class="region-label">
+      <span class="region-code-tag">${regionCode}</span>
+      ${regionName}
+      <span class="level-dot" style="background:${DOT[maxLv]}"></span>
+    </div>
+    <div class="chart-wrap">
+      ${rowsHtml}
+      <div class="axis-row">
+        <div class="axis-spacer"></div>
+        <div class="axis-dates">${dayAxisHtml}${hourAxisHtml}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function loadWarnings() {
+  const content = document.getElementById('content');
+  const timeEl  = document.getElementById('update-time');
+  try {
+    const res  = await fetch('https://api.ipma.pt/open-data/forecast/warnings/warnings_www.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+
+    const regionData = { MRM: [], MCS: [] };
+    data.forEach(w => {
+      if (regionData.hasOwnProperty(w.idAreaAviso)) regionData[w.idAreaAviso].push(w);
+    });
+
+    content.innerHTML = Object.entries(REGIONS)
+      .map(([code, name]) => buildChart(code, name, regionData[code]))
+      .join('');
+
+    const now = new Date();
+    timeEl.textContent = 'Atualizado: '
+      + now.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
+
+    if (window.parent !== window)
+      window.parent.postMessage({ type: 'resize', height: document.body.scrollHeight }, '*');
+
+  } catch (err) {
+    content.innerHTML = `<div class="status error">
+      <b>Erro ao carregar avisos do IPMA</b><br>
+      <small>${err.message}</small><br><br>
+      <button class="refresh-btn" onclick="loadWarnings()">↻ Tentar novamente</button>
+    </div>`;
+    timeEl.textContent = 'Erro';
+  }
+}
+
+loadWarnings();
+setInterval(loadWarnings, 10 * 60 * 1000);
+</script>
+</body>
+</html>
