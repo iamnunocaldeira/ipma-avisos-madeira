@@ -26,29 +26,28 @@ body{padding:8px}
 .level-dot{display:inline-block;width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(0,0,0,.15)}
 
 .chart-wrap{border:1px solid #bbb;border-radius:3px;overflow:hidden;background:#fff}
-.chart-row{display:flex;align-items:stretch;border-bottom:1px solid rgba(0,0,0,.25);height:18px}
+.chart-row{display:flex;align-items:stretch;border-bottom:1px solid #ddd;height:24px}
 .chart-row:last-of-type{border-bottom:none}
-.row-icon{width:26px;min-width:26px;display:flex;align-items:center;justify-content:center;background:#f0f2f5;border-right:1px solid #ccc;flex-shrink:0;padding:1px}
-.row-icon svg{width:14px;height:14px}
-.row-timeline{flex:1;position:relative;overflow:hidden;background:#e0e0e0}
+.row-icon{width:32px;min-width:32px;display:flex;align-items:center;justify-content:center;background:#f0f2f5;border-right:1px solid #ccc;flex-shrink:0;padding:2px}
+.row-icon svg{width:18px;height:18px}
+.row-timeline{flex:1;position:relative;overflow:hidden}
 
 .seg{position:absolute;top:0;bottom:0}
 .seg-green {background:#4caf50}
 .seg-yellow{background:#fdd835}
 .seg-orange{background:#ff8c00}
 .seg-red   {background:#e53935}
+.seg+.seg{border-left:1px solid rgba(0,0,0,.06)}
 
-.sep-1h {position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.20);z-index:2;pointer-events:none}
-.sep-3h {position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.50);z-index:3;pointer-events:none}
-.sep-day{position:absolute;top:0;bottom:0;width:2px;background:#111;z-index:4;pointer-events:none}
-.now-line{position:absolute;top:0;bottom:0;width:2px;background:rgba(0,80,200,.55);z-index:5;pointer-events:none}
+.sep-3h {position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.18);z-index:2;pointer-events:none}
+.sep-day{position:absolute;top:0;bottom:0;width:2px;background:#111;z-index:3;pointer-events:none}
+.now-line{position:absolute;top:0;bottom:0;width:2px;background:rgba(0,80,200,.55);z-index:4;pointer-events:none}
 
-.axis-row{display:flex;border-top:1px solid #bbb;background:#f8f9fa;height:16px}
-.axis-spacer{width:26px;min-width:26px;border-right:1px solid #ccc;flex-shrink:0}
+.axis-row{display:flex;border-top:1px solid #bbb;background:#f8f9fa;height:18px}
+.axis-spacer{width:32px;min-width:32px;border-right:1px solid #ccc;flex-shrink:0}
 .axis-dates{flex:1;position:relative}
-.axis-date-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:8px;font-weight:700;color:#222;white-space:nowrap}
-.axis-3h-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:7px;color:#666;white-space:nowrap}
-.axis-1h-label{display:none}
+.axis-date-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:9px;font-weight:700;color:#222;white-space:nowrap}
+.axis-hour-label{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:8px;color:#888;white-space:nowrap}
 
 /* ── LEGEND ── */
 .legend{display:flex;flex-wrap:wrap;gap:5px 12px;margin-top:8px}
@@ -56,8 +55,14 @@ body{padding:8px}
 .legend-sq{width:11px;height:11px;border-radius:2px;flex-shrink:0}
 
 /* ── CRITERIA TABLES ── */
-.criteria-section{margin-top:16px;border-top:2px solid #004a8f;padding-top:10px}
-.criteria-title{font-size:11px;font-weight:700;color:#004a8f;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.criteria-section{margin-top:16px;border-top:2px solid #004a8f;padding-top:0}
+.criteria-toggle{display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 0 10px 0;user-select:none}
+.criteria-toggle:hover .criteria-title{color:#003070}
+.criteria-title{font-size:11px;font-weight:700;color:#004a8f;text-transform:uppercase;letter-spacing:.4px;margin:0;flex:1}
+.criteria-arrow{font-size:10px;color:#004a8f;transition:transform .25s;flex-shrink:0}
+.criteria-arrow.open{transform:rotate(180deg)}
+.criteria-body{overflow:hidden;max-height:0;transition:max-height .35s ease}
+.criteria-body.open{max-height:9999px}
 
 .crit-table{width:100%;border-collapse:collapse;font-size:10px;margin-bottom:10px}
 .crit-table th,.crit-table td{border:1px solid #ccc;padding:3px 6px;vertical-align:middle}
@@ -125,7 +130,11 @@ body{padding:8px}
 
 <!-- ── CRITERIA SECTION ── -->
 <div class="criteria-section">
-  <div class="criteria-title">Critérios para a emissão de Avisos Meteorológicos do IPMA para o Arquipélago da Madeira</div>
+  <div class="criteria-toggle" onclick="toggleCriteria()" aria-expanded="false" id="criteria-toggle">
+    <span class="criteria-title">Critérios para a emissão de Avisos Meteorológicos do IPMA para o Arquipélago da Madeira</span>
+    <span class="criteria-arrow" id="criteria-arrow">&#9660;</span>
+  </div>
+  <div class="criteria-body" id="criteria-body">
 
   <table class="crit-table">
     <thead>
@@ -286,7 +295,8 @@ body{padding:8px}
       </tr>
     </tbody>
   </table>
-</div>
+  </div><!-- /criteria-body -->
+</div><!-- /criteria-section -->
 
 <div class="footer" style="margin-top:10px">
   Fonte: <a href="https://www.ipma.pt/" target="_blank" rel="noopener">IPMA</a>
@@ -295,25 +305,17 @@ body{padding:8px}
 
 <script>
 const ICONS = {
-  /* Raio — traço em ziguezague */
-  'Trovoada':`<svg viewBox="0 0 24 24" fill="#222" stroke="none"><polygon points="14,2 7,13 12,13 10,22 17,11 12,11"/></svg>`,
-  /* Onda — forma de tubo/tsunami */
-  'Agitação Marítima':`<svg viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"><path d="M2 16 Q5 10 9 14 Q12 17 14 12 Q16 7 19 10 L22 8"/><path d="M19 10 L22 8 L20 13"/></svg>`,
-  /* Nuvem com gotas */
-  'Precipitação':`<svg viewBox="0 0 24 24" fill="#222" stroke="none"><path d="M18 10.5a6 6 0 0 0-11.5-1.7A4 4 0 1 0 7 17h11a4 4 0 0 0 0-6.5z"/><circle cx="9" cy="20" r="1.2"/><circle cx="12" cy="22" r="1.2"/><circle cx="15" cy="20" r="1.2"/></svg>`,
-  /* Bandeirola de vento */
-  'Vento':`<svg viewBox="0 0 24 24" fill="#222" stroke="none"><rect x="5" y="2" width="2" height="20" rx="1"/><polygon points="7,3 20,7 7,12"/></svg>`,
-  /* Floco de neve */
-  'Neve':`<svg viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.8" stroke-linecap="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/><line x1="12" y1="6" x2="9" y2="3"/><line x1="12" y1="6" x2="15" y2="3"/><line x1="12" y1="18" x2="9" y2="21"/><line x1="12" y1="18" x2="15" y2="21"/><line x1="6" y1="12" x2="3" y2="9"/><line x1="6" y1="12" x2="3" y2="15"/><line x1="18" y1="12" x2="21" y2="9"/><line x1="18" y1="12" x2="21" y2="15"/></svg>`,
-  /* Termómetro com sinal menos — frio */
-  'Tempo Frio':`<svg viewBox="0 0 24 24" fill="#222" stroke="none"><path d="M13 14.3V5a1 1 0 0 0-2 0v9.3A3 3 0 1 0 13 14.3z"/><rect x="15" y="7" width="4" height="1.5" rx=".75"/></svg>`,
-  /* Termómetro com sinal mais — quente */
-  'Tempo Quente':`<svg viewBox="0 0 24 24" fill="#222" stroke="none"><path d="M13 14.3V5a1 1 0 0 0-2 0v9.3A3 3 0 1 0 13 14.3z"/><rect x="15" y="6" width="4" height="1.5" rx=".75"/><rect x="16.25" y="4.75" width="1.5" height="4" rx=".75"/></svg>`,
-  /* Nevoeiro — linhas horizontais escalonadas */
-  'Nevoeiro':`<svg viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"><line x1="3" y1="8"  x2="21" y2="8"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="16" x2="16" y2="16"/><line x1="3" y1="20" x2="12" y2="20"/></svg>`
+  'Trovoada':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 10a7 7 0 1 0-13.5 2.4A4 4 0 0 0 7 20h9a5 5 0 0 0 1-9.9"/><polyline points="13 11 10 16 14 16 11 21"/></svg>`,
+  'Precipitação':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 17.6A5 5 0 0 0 18 8h-1.3A7 7 0 1 0 4 14.9"/><line x1="8" y1="19" x2="8" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="16" y1="19" x2="16" y2="21"/></svg>`,
+  'Vento':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.6 8A3 3 0 1 1 12 12H2"/><path d="M14.8 16A3 3 0 1 0 17 12H2"/><line x1="2" y1="10" x2="10" y2="10"/></svg>`,
+  'Agitação Marítima':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M2 7c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>`,
+  'Neve':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 7l-5 5-5-5"/><path d="M17 17l-5-5-5 5"/><path d="M2 12l5-3 5 3 5-3 5 3"/><path d="M2 12l5 3 5-3 5 3 5-3"/></svg>`,
+  'Tempo Frio':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26A6 6 0 1 0 14 14.76z"/></svg>`,
+  'Tempo Quente':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
+  'Nevoeiro':`<svg viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="10" x2="21" y2="10"/><line x1="3" y1="14" x2="21" y2="14"/><line x1="3" y1="18" x2="15" y2="18"/><path d="M7 6a5 5 0 0 1 10 0"/></svg>`
 };
 
-const PHENOMENA=['Trovoada','Agitação Marítima','Precipitação','Vento','Neve','Tempo Frio','Tempo Quente','Nevoeiro'];
+const PHENOMENA=['Trovoada','Precipitação','Vento','Agitação Marítima','Neve','Tempo Frio','Tempo Quente','Nevoeiro'];
 const TYPE_MAP={'Rain':'Precipitação','Wind':'Vento','Fog':'Nevoeiro','Snow/Ice':'Neve','Thunderstorm':'Trovoada','Coastal Event':'Agitação Marítima','High Temperature':'Tempo Quente','Low Temperature':'Tempo Frio'};
 const REGIONS={MRM:'Regiões Montanhosas',MCS:'Costa Sul'};
 const LVL={red:4,orange:3,yellow:2,green:1};
@@ -325,9 +327,9 @@ function normLevel(l){return(l||'green').toLowerCase()}
 
 function buildChart(code,name,warnings){
   const now=new Date();
-  const STEP_H=1,WINDOW_H=72,SLOTS=WINDOW_H/STEP_H;
+  const STEP_H=3,WINDOW_H=72,SLOTS=WINDOW_H/STEP_H;
   const t0=new Date(now);
-  t0.setHours(Math.floor(t0.getHours()/3)*3,0,0,0);
+  t0.setHours(Math.floor(t0.getHours()/STEP_H)*STEP_H,0,0,0);
   const tEnd=new Date(t0.getTime()+WINDOW_H*3600000);
 
   const grids={};
@@ -359,13 +361,10 @@ function buildChart(code,name,warnings){
     return out;
   }
 
-  // ticks a cada hora — classificados por tipo
   const ticks=[];
   for(let s=1;s<SLOTS;s++){
     const t=new Date(t0.getTime()+s*STEP_H*3600000);
-    const h=t.getHours();
-    const pct=s/SLOTS*100;
-    ticks.push({pct,isDay:h===0,is3h:h%3===0&&h!==0,label:t});
+    ticks.push({pct:s/SLOTS*100,isDay:t.getHours()===0,label:t});
   }
 
   const nowPct=Math.max(0,Math.min(100,(now-t0)/(tEnd-t0)*100));
@@ -376,27 +375,22 @@ function buildChart(code,name,warnings){
 
   const rowsHtml=PHENOMENA.map(p=>{
     const segs=toSegs(grids[p]);
-    const segsHtml=segs.map(s=>`<div class="seg ${CLS[s.lv]}" style="left:${s.pct.toFixed(3)}%;width:${s.w.toFixed(3)}%"></div>`).join('');
-    const sepsHtml=ticks.map(t=>{
-      if(t.isDay) return`<div class="sep-day" style="left:${t.pct.toFixed(3)}%"></div>`;
-      if(t.is3h)  return`<div class="sep-3h"  style="left:${t.pct.toFixed(3)}%"></div>`;
-      return`<div class="sep-1h" style="left:${t.pct.toFixed(3)}%"></div>`;
-    }).join('');
-    const nowHtml=`<div class="now-line" style="left:${nowPct.toFixed(3)}%"></div>`;
+    const segsHtml=segs.map(s=>`<div class="seg ${CLS[s.lv]}" style="left:${s.pct.toFixed(2)}%;width:${s.w.toFixed(2)}%"></div>`).join('');
+    const sepsHtml=ticks.map(t=>`<div class="${t.isDay?'sep-day':'sep-3h'}" style="left:${t.pct.toFixed(2)}%"></div>`).join('');
+    const nowHtml=`<div class="now-line" style="left:${nowPct.toFixed(2)}%"></div>`;
     return`<div class="chart-row">
       <div class="row-icon" title="${p}">${ICONS[p]||''}</div>
       <div class="row-timeline">${segsHtml}${sepsHtml}${nowHtml}</div>
     </div>`;
   }).join('');
 
-  // eixo: apenas data (meia-noite) e horas de 3 em 3h — sem labels de 1h
   const axisHtml=ticks.map(t=>{
     const h=t.label.getHours();
-    if(t.isDay){
-      const lbl=t.label.toLocaleDateString('pt-PT',{day:'2-digit',month:'2-digit',year:'numeric'});
-      return`<div class="axis-date-label" style="left:${t.pct.toFixed(3)}%">${lbl}</div>`;
-    }else if(t.is3h){
-      return`<div class="axis-3h-label" style="left:${t.pct.toFixed(3)}%">${String(h).padStart(2,'0')}H</div>`;
+    if(h===0){
+      const lbl=t.label.toLocaleDateString('pt-PT',{day:'2-digit',month:'short'});
+      return`<div class="axis-date-label" style="left:${t.pct.toFixed(2)}%">${lbl}</div>`;
+    }else if(h===6||h===12||h===18){
+      return`<div class="axis-hour-label" style="left:${t.pct.toFixed(2)}%">${String(h).padStart(2,'0')}h</div>`;
     }
     return'';
   }).join('');
@@ -439,6 +433,18 @@ async function loadWarnings(){
 
 loadWarnings();
 setInterval(loadWarnings,10*60*1000);
+
+function toggleCriteria(){
+  const body=document.getElementById('criteria-body');
+  const arrow=document.getElementById('criteria-arrow');
+  const toggle=document.getElementById('criteria-toggle');
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  arrow.classList.toggle('open',!isOpen);
+  toggle.setAttribute('aria-expanded',String(!isOpen));
+  if(window.parent!==window)
+    setTimeout(()=>window.parent.postMessage({type:'resize',height:document.body.scrollHeight},'*'),400);
+}
 </script>
 </body>
 </html>
