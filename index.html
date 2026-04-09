@@ -39,6 +39,7 @@ body{padding:8px}
 .seg-red   {background:#e53935}
 .seg+.seg{border-left:1px solid rgba(0,0,0,.06)}
 
+.sep-1h {position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.07);z-index:1;pointer-events:none}
 .sep-3h {position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.18);z-index:2;pointer-events:none}
 .sep-day{position:absolute;top:0;bottom:0;width:2px;background:#111;z-index:3;pointer-events:none}
 .now-line{position:absolute;top:0;bottom:0;width:2px;background:rgba(0,80,200,.55);z-index:4;pointer-events:none}
@@ -366,6 +367,15 @@ function buildChart(code,name,warnings){
     const t=new Date(t0.getTime()+s*STEP_H*3600000);
     ticks.push({pct:s/SLOTS*100,isDay:t.getHours()===0,label:t});
   }
+  // 1h ticks for bar lines only (no axis labels)
+  const ticks1h=[];
+  const SLOTS1H=WINDOW_H;
+  for(let s=1;s<SLOTS1H;s++){
+    const t=new Date(t0.getTime()+s*3600000);
+    const h=t.getHours();
+    if(h%3===0)continue; // already covered by sep-3h or sep-day
+    ticks1h.push({pct:s/SLOTS1H*100});
+  }
 
   const nowPct=Math.max(0,Math.min(100,(now-t0)/(tEnd-t0)*100));
   const maxLv=warnings.reduce((best,w)=>{
@@ -377,10 +387,11 @@ function buildChart(code,name,warnings){
     const segs=toSegs(grids[p]);
     const segsHtml=segs.map(s=>`<div class="seg ${CLS[s.lv]}" style="left:${s.pct.toFixed(2)}%;width:${s.w.toFixed(2)}%"></div>`).join('');
     const sepsHtml=ticks.map(t=>`<div class="${t.isDay?'sep-day':'sep-3h'}" style="left:${t.pct.toFixed(2)}%"></div>`).join('');
+    const seps1hHtml=ticks1h.map(t=>`<div class="sep-1h" style="left:${t.pct.toFixed(2)}%"></div>`).join('');
     const nowHtml=`<div class="now-line" style="left:${nowPct.toFixed(2)}%"></div>`;
     return`<div class="chart-row">
       <div class="row-icon" title="${p}">${ICONS[p]||''}</div>
-      <div class="row-timeline">${segsHtml}${sepsHtml}${nowHtml}</div>
+      <div class="row-timeline">${segsHtml}${seps1hHtml}${sepsHtml}${nowHtml}</div>
     </div>`;
   }).join('');
 
