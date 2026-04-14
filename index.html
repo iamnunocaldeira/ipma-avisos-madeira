@@ -21,7 +21,7 @@ body{padding:8px}
 
 /* ── REGION CHART ── */
 .region-block{margin-bottom:14px}
-.region-label{font-size:11px;font-weight:700;color:#004a8f;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.region-label{font-size:11px;font-weight:700;color:#222;letter-spacing:.3px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
 .region-code-tag{font-size:9px;font-weight:700;background:#004a8f;color:#fff;border-radius:3px;padding:1px 5px;letter-spacing:.5px}
 .level-dot{display:inline-block;width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(0,0,0,.15)}
 
@@ -399,7 +399,7 @@ function buildChart(code,name,warnings){
     if(h===0){
       const lbl=t.label.toLocaleDateString('pt-PT',{day:'2-digit',month:'short'});
       return`<div class="axis-date-label" style="left:${t.pct.toFixed(2)}%">${lbl}</div>`;
-    }else if(h===6||h===12||h===18){
+    }else if(h%3===0){
       return`<div class="axis-hour-label" style="left:${t.pct.toFixed(2)}%">${String(h).padStart(2,'0')}h</div>`;
     }
     return'';
