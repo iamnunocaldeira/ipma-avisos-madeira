@@ -400,7 +400,7 @@ function buildChart(code,name,warnings){
       const lbl=t.label.toLocaleDateString('pt-PT',{day:'2-digit',month:'short'});
       return`<div class="axis-date-label" style="left:${t.pct.toFixed(2)}%">${lbl}</div>`;
     }else if(h%3===0){
-      return`<div class="axis-hour-label" style="left:${t.pct.toFixed(2)}%">${String(h).padStart(2,'0')}h</div>`;
+      return`<div class="axis-hour-label" style="left:${t.pct.toFixed(2)}%">${String(h).padStart(2,'0')}H</div>`;
     }
     return'';
   }).join('');
